@@ -1,5 +1,8 @@
 package expression.evaluator;
 
+import expression.evaluator.node.DoubleNumber;
+import expression.evaluator.node.Node;
+import expression.evaluator.operation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,17 +16,40 @@ public class App {
     private static final Logger logger = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) {
-//        String input = "9 + 11 * 55 / .66 ^ 44.9 _ 2 * ( 2 + 1 )";
-        String input = "2 * 5 + 1";
+        String expression = "2 + 5 + 1 + 2 - 5";
 
-//        String tokensRegex = "([+-]?([0-9]*[.])?[0-9]+)|(\\+)|(\\-)|(\\*)|(\\/)|(\\^)|(_)|(\\()|(\\))";
-//
-//        Pattern tokenPattern = Pattern.compile(tokensRegex);
-//        Matcher matcher = tokenPattern.matcher(input);
-//
-//        while(matcher.find()) {
-//            String token = matcher.group();
-//            logger.info("token: {}", token);
-//        }
+        Tokenizer tokenizer = new Tokenizer();
+        List<String> tokens = tokenizer.tokenize(expression);
+
+        Node tree = parseTokens(tokens);
+        logger.info("{} = {}", tree, tree.evaluate());
+    }
+
+    private static Node parseTokens(List<String> tokens) {
+        return parseTokens(tokens, null);
+    }
+
+    private static Node parseTokens(List<String> tokens, Node tree) {
+        if (tree == null) {
+            Node leaf = new DoubleNumber(Double.valueOf(tokens.get(0)));
+            return parseTokens(tokens.subList(1, tokens.size()), leaf);
+        } else {
+            if (tokens.isEmpty()) {
+                return tree;
+            } else {
+                Node result = null;
+                String firstToken = tokens.get(0);
+                switch (firstToken) {
+                    case "+":
+                        result = new AdditionOperation(tree, parseTokens(tokens.subList(1, tokens.size())));
+                        break;
+                    case "-":
+                        result = new SubtractionOperation(tree, parseTokens(tokens.subList(1, tokens.size())));
+                        break;
+                }
+
+                return result;
+            }
+        }
     }
 }
