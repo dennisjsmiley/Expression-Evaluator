@@ -16,7 +16,7 @@ public class App {
     private static final Logger logger = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) {
-        String expression = "2 + 5 + 1 + 2 - 5";
+        String expression = "3 * 5 + 2 * 2 - 5 / 5";
 
         Tokenizer tokenizer = new Tokenizer();
         List<String> tokens = tokenizer.tokenize(expression);
@@ -45,6 +45,14 @@ public class App {
                         break;
                     case "-":
                         result = new SubtractionOperation(tree, parseTokens(tokens.subList(1, tokens.size())));
+                        break;
+                    case "*":
+                        BinaryOperation multOp = new MultiplicationOperation(tree, new DoubleNumber(Double.valueOf(tokens.get(1))));
+                        result = parseTokens(tokens.subList(2, tokens.size()), multOp);
+                        break;
+                    case "/":
+                        BinaryOperation divOp = new DivisionOperation(tree, new DoubleNumber(Double.valueOf(tokens.get(1))));
+                        result = parseTokens(tokens.subList(2, tokens.size()), divOp);
                         break;
                 }
 
