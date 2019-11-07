@@ -16,14 +16,14 @@ public class App {
 //        String input = "9 + 11 * 55 / .66 ^ 44.9 _ 2 * ( 2 + 1 )";
         String input = "2 * 5 + 1";
 
-        String tokensRegex = "([+-]?([0-9]*[.])?[0-9]+)|(\\+)|(\\-)|(\\*)|(\\/)|(\\^)|(_)|(\\()|(\\))";
-
-        Pattern tokenPattern = Pattern.compile(tokensRegex);
-        Matcher matcher = tokenPattern.matcher(input);
-
-        while(matcher.find()) {
-            String token = matcher.group();
-            logger.info("token: {}", token);
-        }
+//        String tokensRegex = "([+-]?([0-9]*[.])?[0-9]+)|(\\+)|(\\-)|(\\*)|(\\/)|(\\^)|(_)|(\\()|(\\))";
+//
+//        Pattern tokenPattern = Pattern.compile(tokensRegex);
+//        Matcher matcher = tokenPattern.matcher(input);
+//
+//        while(matcher.find()) {
+//            String token = matcher.group();
+//            logger.info("token: {}", token);
+//        }
     }
 }
